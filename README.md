@@ -76,3 +76,8 @@ hide/show packets based on what user searches
 - lara: gets a packet record in and shows it. kats table will have record_at(row) to get it
 
 Everything else (internal names, extra functions) is up to you just post in our chat please so we can use them!!
+
+### PacketRecord (kat)
+fields: timestamp, src_ip, dest_ip, src_port, dest_port, protocol, length, info, raw_scapy_packet
+- missing values are "-"
+- packet_to_record(packet) makes a PacketRecord from a raw scapy packet
