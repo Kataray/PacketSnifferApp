@@ -1,0 +1,1 @@
+# TODO: lara - detail pane widget

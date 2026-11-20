@@ -1,0 +1,1 @@
+print("yay project is setup")
