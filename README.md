@@ -15,7 +15,7 @@ Will show in a table, show details, filter, search, and export.
 
 ### For some context for the other files:
 In packet record, check the fields please -
-timestamp, src, dest, src_port, dest_port, protocol, length, info, raw. May be useful for your section!
+timestamp, src_ip, dest_ip, src_port, dest_port, protocol, length, info, raw_scapy_packet. May be useful for your section!
 
 ### Breakdown How we will do this:
 Everyone take over one feature, (kat will make base template, build your gui part to fill in the template)
@@ -42,12 +42,12 @@ table model that holds packets
 - read a pcap file and give a list of scapy packets 
 - if error then handle gracefully or give some readable error 
 - export pcap (all packets or filterd ones)
-- export csv : timestamp, src, src_port, dest, dest_port, protocol, length, info
+- export csv : timestamp, src_ip, src_port, dest_ip, dest_port, protocol, length, info
 - open dialog and export dialog
 
 ### detail pane - lara (also powerpoint)
 show what is inside a selected packet
-- turn a packet into its layers / show it --> Ethernet,IP,TCP/UDP/ICMP --> use raw packet
+- turn a packet into its layers / show it --> Ethernet,IP,TCP/UDP/ICMP --> use raw_scapy_packet
 - the pane itself should show the detials when a packet is selected, otherwise just show empty (recall wireshark)
 - anything that isn't IP/TCP/UDP/ICMP should still show something
 
@@ -69,11 +69,11 @@ hide/show packets based on what user searches
 
 ### what were agreeing on for now (so we can all start):
 - packets get passed around as raw scapy packets
-- kat's table has add_packet(packet) -- live capture and file reading both call this 
+- kat's table has add_raw_packet(raw_scapy_packet) -- live capture and file reading both call this 
 - kulsum: capture sends out each raw packet (please post name in chat so we know how to use it)
-- yas: reading a pcap gives back a list of raw scapy packets
-- kavish: filter is a dictionary like {"protocol": "TCP", etc}. kats table will have set_filter(criteria) that takes it
-- lara: gets a packet record in and shows it. kats table will have record_at(row) to get it
+- yas: reading a pcap gives back a list of raw scapy packets. to export use get_all_packet_records() or get_visible_packet_records()
+- kavish: filter is a dictionary like {"protocol": "TCP", etc}. kats table will have apply_filter(active_filter) that takes it
+- lara: gets a packet record in and shows it. kats table will have get_record_at_row(table_row) to get it
 
 Everything else (internal names, extra functions) is up to you just post in our chat please so we can use them!!
 
