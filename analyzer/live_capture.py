@@ -65,6 +65,7 @@ def start_live_capture():
 def stop_live_capture(timeout=5):
     global _sniffer, _thread, _stop_event
 
+    # todo: dialog box in gui
     if _sniffer is None:
         print("capture is not running.")
         return
@@ -78,6 +79,7 @@ def stop_live_capture(timeout=5):
         _thread.join(timeout=timeout)
         _thread = None
 
+    # clear packet queue once capture stopped
     while not PACKET_QUEUE.empty():
         try:
             PACKET_QUEUE.get_nowait()
