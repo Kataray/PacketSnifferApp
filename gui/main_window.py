@@ -4,6 +4,9 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
 from analyzer.packet_table import PacketTable
 
+from analyzer.live_capture import start_live_capture
+from analyzer.live_capture import stop_live_capture
+
 # TODO kat: uncomment 4 lines related to table once the real PacketTable is pushed (reminder for myself lol)
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -58,8 +61,18 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(QLabel("Interface:"))
         layout.addWidget(QLabel("Wi-Fi"))
-        layout.addWidget(QPushButton("Start capture"))
-        layout.addWidget(QPushButton("Stop"))
+
+        # start: call live capture method from live_capture.py
+        start_button = QPushButton("Start capture")
+        start_button.clicked
+        start_button.clicked.connect(start_live_capture)
+        layout.addWidget(start_button)
+
+        # stop: call method to stop live capture from live_capture.py
+        stop_button = QPushButton("Stop")
+        stop_button.clicked.connect(stop_live_capture)
+        layout.addWidget(stop_button)
+
         widget = QWidget()
         widget.setLayout(layout)
         return widget
