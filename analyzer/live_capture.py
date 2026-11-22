@@ -34,7 +34,7 @@ def add_to_packet_table():
         except queue.Empty:
             continue
         try:
-            _packet_table.add_packet(raw_packet)
+            _packet_table.add_raw_packet(raw_packet)
         except Exception as e:
             print(f"live capture error: adding packet to table: {e}")
         finally:
