@@ -7,7 +7,6 @@ from analyzer.packet_table import PacketTable
 from analyzer.live_capture import start_live_capture
 from analyzer.live_capture import stop_live_capture
 
-# TODO kat: uncomment 4 lines related to table once the real PacketTable is pushed (reminder for myself lol)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -17,7 +16,7 @@ class MainWindow(QMainWindow):
         # creates the table, the UI view, uses the data, selects entire row, stretches table.
         self.packet_table = PacketTable()
         self.packet_table_view = QTableView()
-        #self.packet_table_view.setModel(self.packet_table)
+        self.packet_table_view.setModel(self.packet_table)
         self.packet_table_view.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.packet_table_view.horizontalHeader().setStretchLastSection(True)
 
@@ -46,11 +45,11 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # show detail pane on click
-        #self.packet_table_view.selectionModel().currentRowChanged.connect(self.on_row_selected)
+        self.packet_table_view.selectionModel().currentRowChanged.connect(self.on_row_selected)
 
         # status bar (how many packets)
-        #self.packet_table.rowsInserted.connect(self.update_status_bar)
-        #self.packet_table.modelReset.connect(self.update_status_bar)
+        self.packet_table.rowsInserted.connect(self.update_status_bar)
+        self.packet_table.modelReset.connect(self.update_status_bar)
         self.update_status_bar()
 
     # NOTE : the parts down here need to be REPLACED/WORKED ON by whoever is assigned that part, these are placeholders cuz I wanted to test the UI
