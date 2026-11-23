@@ -64,18 +64,48 @@ class MainWindow(QMainWindow):
 
         # start: call live capture method from live_capture.py
         start_button = QPushButton("Start capture")
-        start_button.clicked
-        start_button.clicked.connect(start_live_capture)
+        start_button.clicked.connect(self.start_capture_clicked)
         layout.addWidget(start_button)
 
         # stop: call method to stop live capture from live_capture.py
         stop_button = QPushButton("Stop")
-        stop_button.clicked.connect(stop_live_capture)
+        stop_button.clicked.connect(self.stop_capture_clicked)
         layout.addWidget(stop_button)
 
         widget = QWidget()
         widget.setLayout(layout)
         return widget
+
+    # NEW method: when "start" clicked (kulsum)
+    def start_capture_clicked(self):
+        # if start already clicked, do nothing
+        if self.packet_table_view is not None and self.packet_table_view.isVisible():
+            QMessageBox.warning(self, "Warning", "Capture is already running.")
+            return
+
+        try:
+            start_live_capture()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to start live capture: {str(e)}")
+            return
+
+        # begin updating packet table view (todo)
+
+        self.start_button.setEnabled(False)
+        self.stop_button.setEnabled(True)
+
+    # NEW method: when "stop" clicked (kulsum)
+    def stop_capture_clicked(self):
+        try:
+            stop_live_capture()
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to stop live capture: {str(e)}")
+            return
+
+        # stop updating packet table view (todo)
+
+        self.start_button.setEnabled(True)
+        self.stop_button.setEnabled(False)
 
     # yas: open and export buttons
     def make_file_buttons(self):
