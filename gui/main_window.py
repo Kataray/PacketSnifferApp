@@ -3,6 +3,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
 from analyzer.packet_table import PacketTable
+from gui.filter_bar import FilterBar
 
 from analyzer.live_capture import start_live_capture
 from analyzer.live_capture import stop_live_capture
@@ -118,25 +119,10 @@ class MainWindow(QMainWindow):
 
     # kavish: protocol dropdown and four text boxes, clear button
     def make_filter_bar(self):
-        protocol_dropdown = QComboBox()
-        protocol_dropdown.addItems(["All", "TCP", "UDP", "ICMP", "Other"])
-
-        layout = QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(QLabel("Protocol:"))
-        layout.addWidget(protocol_dropdown)
-        layout.addWidget(QLabel("Source IP:"))
-        layout.addWidget(self.make_text_box(140), 3)
-        layout.addWidget(QLabel("Source Port:"))
-        layout.addWidget(self.make_text_box(70), 1)
-        layout.addWidget(QLabel("Dest IP:"))
-        layout.addWidget(self.make_text_box(140), 3)
-        layout.addWidget(QLabel("Dest Port:"))
-        layout.addWidget(self.make_text_box(70), 1)
-        layout.addWidget(QPushButton("Clear filters"))
-        widget = QWidget()
-        widget.setLayout(layout)
-        return widget
+        filter_bar = FilterBar()
+        # whenever the filter changes, give it to the table so it can hide/show packets
+        filter_bar.filter_changed.connect(self.packet_table.apply_filter)
+        return filter_bar
 
     # makes a text box
     def make_text_box(self, minimum_width):
