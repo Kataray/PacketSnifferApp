@@ -3,7 +3,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
 from analyzer.packet_table import PacketTable
-
+from gui.file_dialogs import open_capture, export_capture
 from analyzer.live_capture import start_live_capture
 from analyzer.live_capture import stop_live_capture
 
@@ -110,8 +110,15 @@ class MainWindow(QMainWindow):
     def make_file_buttons(self):
         layout = QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(QPushButton("Open file..."))
-        layout.addWidget(QPushButton("Export..."))
+
+        open_button = QPushButton("Open file...")
+        open_button.clicked.connect(lambda: open_capture(self))
+        layout.addWidget(open_button)
+
+        export_button = QPushButton("Export...")
+        export_button.clicked.connect(lambda: export_capture(self))
+        layout.addWidget(export_button)
+
         widget = QWidget()
         widget.setLayout(layout)
         return widget
