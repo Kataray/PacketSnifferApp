@@ -146,22 +146,34 @@ class MainWindow(QMainWindow):
 
     # lara: the box that shows what's inside the selected packet
     def make_detail_pane(self):
-        label = QLabel("detail pane (lara) - click a packet to see it here")
-        label.setStyleSheet("border: 1px solid gray; padding: 8px;")
-        label.setAlignment(Qt.AlignmentFlag.AlignTop)
-        label.setWordWrap(True)
-        return label    
+        from gui.detail_pane import DetailPane
+        pane = DetailPane()
+        selection = self.packet_table_view.selectionModel()
+        selection.selectionChanged.connect(self.on_row_selected)
+        self.packet_table.modelReset.connect(pane.clear)
+        return pane
+          
 
     # this needs to be replaced @lara when you do the detail pane
     def on_row_selected(self, current_index, previous_index):
-        row = current_index.row()
-        if row < 0:
-            return
-        record = self.packet_table.get_record_at_row(row)
-        self.detail_pane.setText(record.info)    
+        selection = self.packet_table_view.selectionModel()
+        current = selection.currentIndex()
+
+        if not selection.isSelected(current):
+            rows = selection.selectedRows()
+            if not rows:
+                self.detail_pane.clear()
+                return
+            current = rows[0]
+
+        record = self.packet_table.get_record_at_row(current.row())
+        self.detail_pane.show_record(record)
+        return   
 
     # how many packets are visible out of total
     def update_status_bar(self):
         visible_count = len(self.packet_table.get_visible_packet_records())
         total_count = len(self.packet_table.get_all_packet_records())
         self.statusBar().showMessage(f"{visible_count} of {total_count} packets")
+        
+    
